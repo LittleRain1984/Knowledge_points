@@ -54,3 +54,33 @@ public class RedisStringJava {
     }
 }
 ```
+
+- Redis 事物
+	- watch: 监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。
+	- multi:标记一个事务块的开始。事务块内的多条命令会按照先后顺序被放进一个队列当中，最后由 EXEC 命令原子性(atomic)地执行。
+
+
+- Redis 优势	
+	- 内存存储 速度快
+	- 支持数据类型丰富: string，list，set，sorted set，hash
+	- 按KEY设置过期时间
+
+- Redis 为什么使用单线程
+	- 单线程避免了线程切换和竞态产生的消耗
+
+- 3. redis常见性能问题和解决方案：
+
+	- (1) Master最好不要做任何持久化工作，如RDB内存快照和AOF日志文件
+
+	- (2) 如果数据比较重要，某个Slave开启AOF备份数据，策略设置为每秒同步一次
+
+	- (3) 为了主从复制的速度和连接的稳定性，Master和Slave最好在同一个局域网内
+
+	- (4) 尽量避免在压力很大的主库上增加从库
+
+	- (5) 主从复制不要用图状结构，用单向链表结构更为稳定，即：Master <- Slave1 <- Slave2 <- Slave3...
+
+这样的结构方便解决单点故障问题，实现Slave对Master的替换。如果Master挂了，可以立刻启用Slave1做Master，其他不变。
+
+- oTMS Redis 使用情况
+	- 多少台?
